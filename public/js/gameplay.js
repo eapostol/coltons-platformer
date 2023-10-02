@@ -9,41 +9,43 @@ const player = {
   yke: 0,
   gpe: 0
 }
-function main(lvl){
+let lvl;
+function main(){
 //   gravity(player)
 //   input()
   c.clearRect(0, 0, canvas.width, canvas.height);
   drawLevel(lvl)
 //draw();
-  requestAnimationFrame(lvl);
+  requestAnimationFrame(main);
 }
 window.onload = function(){
-startGame(levelOne)
+    // lvl = levelOne;
+startGame()
 }
 const startGame = (lvl) => {
     // currentLevel = parse(level);
     // console.log(currentLevel)
     console.log(lvl)
-    main(lvl);
+    main();
 }
 
-const level = 
-`00000000000000111
- 00000010000000001
- 01000000000000011
- 00001000000111111
- 00111100000000011
- 00100000001111111
- 01000000000000011
- 10000000011111111
- 10000000001100011
- 11000000000000011
- 10100001100011011
- 10111111110000011
- 10000000000000011
- 10000000000000011
- 10000000111110111
- 11111111111111111`;
+// const level = 
+// `00000000000000111
+//  00000010000000001
+//  01000000000000011
+//  00001000000111111
+//  00111100000000011
+//  00100000001111111
+//  01000000000000011
+//  10000000011111111
+//  10000000001100011
+//  11000000000000011
+//  10100001100011011
+//  10111111110000011
+//  10000000000000011
+//  10000000000000011
+//  10000000111110111
+//  11111111111111111`;
 
  const levelOne = {
     1: [0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0],
