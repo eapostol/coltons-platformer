@@ -1,6 +1,6 @@
 const c = document.getElementById("canvas").getContext("2d");
 const player = {
-  x: 256,
+  x: 100,
   y: 256,
   width: 32,
   height: 32,
@@ -10,8 +10,9 @@ const player = {
   gpe: 0
 }
 let lvl;
-function main(){
+const main = () => {
    gravity(player)
+   collisions(player)
    input()
   c.clearRect(0, 0, canvas.width, canvas.height);
   drawLevel(lvl)
@@ -28,22 +29,22 @@ const startGame = (lvl) => {
 }
 //USE A QUEUE 
  let levelOne = {
-    0:  [0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0],
-    1:  [0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0],
-    2:  [0,0,4,4,4,4,0,0,0,0,0,0,0,0,0,0,0],
-    3:  [0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,1,1],
-    4:  [0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,1,2],
-    5:  [0,0,0,0,0,0,0,0,1,1,1,1,0,0,0,1,2,0,0],
-    6:  [0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,1,2],
-    7:  [0,4,4,4,4,4,4,0,0,0,0,0,0,0,0,1,2],
-    8:  [0,0,0,0,0,0,0,0,0,0,0,0,1,1,1,1,2],
-    9:  [0,0,0,0,0,0,0,0,0,0,0,0,2,2,2,2,2],
-    10: [0,0,0,0,0,0,1,1,1,1,1,0,2,2,2,2,2],
-    11: [0,0,0,0,0,0,1,2,2,2,1,0,2,2,2,2,2],
-    12: [0,0,0,0,0,0,1,2,2,2,1,0,2,2,2,2,2],
-    13: [1,0,0,1,1,1,1,2,2,2,1,1,1,1,1,1,1],
-    14: [2,0,0,2,2,2,2,2,2,2,2,2,2,2,2,2,2],
-    15: [2,0,0,2,3,3,3,3,3,3,3,3,3,3,3,3,3,3,3,3,3,3,3,3,3,3,3]
+    0:  [5,5,5,5,5,5,5,5,5,5,5,5,5,5,5,5,5],
+    1:  [5,0,0,0,0,0,0,0,0,0,1,0,0,0,0,0,5],
+    2:  [5,0,4,4,4,4,0,0,0,0,1,0,0,0,0,0,5],
+    3:  [5,0,0,0,0,0,0,0,0,0,1,0,0,0,0,1,5],
+    4:  [5,0,0,0,0,0,0,0,0,0,1,0,0,0,0,1,5],
+    5:  [5,0,0,0,0,0,0,0,1,1,1,1,1,0,0,1,5],
+    6:  [5,0,0,0,0,0,0,0,0,0,0,0,0,0,0,1,5],
+    7:  [5,4,4,4,4,4,4,0,0,0,0,0,0,0,0,1,5],
+    8:  [5,0,0,0,0,0,0,0,0,0,0,0,1,1,1,1,5],
+    9:  [5,0,0,0,0,0,0,0,0,0,0,1,1,2,2,2,5],
+    10: [5,0,0,0,0,0,1,1,0,0,0,1,1,2,2,2,5],
+    11: [5,0,0,0,0,0,1,2,0,0,0,1,1,2,2,2,5],
+    12: [5,0,0,0,0,0,1,2,0,0,0,1,1,0,2,2,5],
+    13: [5,0,0,1,1,1,1,2,0,1,1,1,1,0,1,1,5],
+    14: [5,0,0,2,2,2,2,2,0,0,0,0,0,0,0,0,5],
+    15: [5,5,5,5,5,5,5,5,5,5,5,5,5,5,5,5,5]
 };
 
 const drawLevel = (lvl) => {
@@ -56,18 +57,21 @@ const drawLevel = (lvl) => {
             }
             if (lvl[key][i] == 2) {
                 c.fillStyle = "brown";
-                c.fillRect(i * 32, Number(key) * 32, 32, 32);
+                c.fillRect(i * 32 , Number(key) * 32, 32, 32);
             }
             if (lvl[key][i] == 3) {
                 c.fillStyle = "grey";
-                c.fillRect(i * 32, Number(key) * 32, 32, 32);
+                c.fillRect(i * 32 , Number(key) * 32, 32, 32);
             }
             if (lvl[key][i] == 0) {
                 c.fillStyle = "skyBlue";
-                c.fillRect(i * 32, Number(key) * 32, 32, 32);
+                c.fillRect(i * 32 , Number(key) * 32, 32, 32);
             } if (lvl[key][i] == 4) {
                 c.fillStyle = "yellow";
-                c.fillRect(i * 32, Number(key) * 32, 32, 32);
+                c.fillRect(i * 32 , Number(key) * 32, 32, 32);
+            } if (lvl[key][i] == 5) {
+                c.fillStyle = "black";
+                c.fillRect(i * 32 , Number(key) * 32, 32, 32);
             }
         };
       
@@ -81,11 +85,7 @@ const drawLevel = (lvl) => {
 
 let currentLevel;
 
- function parse(lvl){
-  const lines = lvl.split("\n");
-  const characters = lines.map(l => l.split(""));
-  return characters;
-}
+
 
  let keysDown = {};
 
@@ -97,68 +97,86 @@ let currentLevel;
    delete keysDown[event.key];
  });
 
- let blockedLeft 
+let blockedLeft 
 let blockedRight 
 
  function input(){
-    console.log(keysDown)
-   if('a' in keysDown && blockedRight !== true){
-     if (getTile((player.x - player.speed) + 1, player.y + 16) !== "1") {
+    // console.log(keysDown)
+   if('a' in keysDown && blockedLeft !== true){
        player.x -= 3;
-     }
+     
    }  
-   if ('a' in keysDown && blockedRight !== true && 'Control' in keysDown){
+   if ('a' in keysDown && blockedLeft !== true && 'Control' in keysDown){
     player.x -= 2;
    }
    
-   if('d' in keysDown && blockedLeft !== true){
-     if (getTile(((player.x + player.width) + player.speed) - 1, player.y + 16) !== "1") {
+   if('d' in keysDown && blockedRight !== true){
        player.x += 3;
-     }
    }
    if ('d' in keysDown && blockedRight !== true && 'Control' in keysDown){
     player.x += 2;
    }
 
    if ('w' in keysDown && player.yke === 0) {
-     if (getTile(player.x,player.y - 1) !== "1" && getTile(player.x + 32,player.y - 1) !== "1"){
      player.yke += 8;
-     }
     }  
  }
 
- function getTile(x,y){
-   return(currentLevel[Math.floor(y / 32)][Math.floor(x / 32)]);
+ const getTile = (x,y) => {
+    return(currentLevel[Math.floor(y / 32)][Math.floor(x / 32)]);
  }
 
- function calcGPE(obj) {
-   return obj.mass * (9.8 / 1000000) * ((canvas.height - obj.height) - (obj.y / 32));
- }
 //  if(obj.x > 400 and key press is d){
 //          give background speed of +3
+ let solidBlock = [1,5] 
+let solidFloor = [4]
+
+
+
+  //handle side to side collision 
+// const collisions = (obj) => {
+  
+//      if ( solidBlock.includes(getTile((obj.x - obj.speed) + 1, obj.y + obj.height-1))) {
+//         blockedLeft = true
+//           console.log('ow my left face')
+//      }  else {
+//          blockedLeft = false
+//      }
+//       if (solidBlock.includes(getTile(((obj.x + obj.width) + obj.speed) - 1, obj.y + obj.height-1))) {
+//           blockedRight = true
+//             console.log('ow my right face')
+//       }  else {
+//           blockedRight = false
+//       }
+
+// }
+const collisions = (obj) => {
+    const left = Math.floor((obj.x - obj.speed) / 32);
+    const right = Math.floor(((obj.x + obj.width) + obj.speed) / 32);
+    const bottom = Math.floor((obj.y + obj.height - 1) / 32);
+  
+    if (solidBlock.includes(getTile(left * 32, bottom * 32)) ) {
+      blockedLeft = true;
+      console.log('ow my left face');
+    } else {
+      blockedLeft = false;
+    }
+  
+    if (solidBlock.includes(getTile(right * 32, bottom * 32))) {
+      blockedRight = true;
+      console.log('ow my right face');
+    } else {
+      blockedRight = false;
+    }
+  }
+
+ const calcGPE = (obj) => {
+   return obj.mass * (9.8 / 1000000) * ((canvas.height - obj.height) - (obj.y / 32));
+ }
+
+//handles gravity and affecters of gravity(head collisions, atacks etc)
  function gravity(obj) {
-    // if(obj.x > 400){
-         
-    //     levelOne ={
-    //         0:  [0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0],
-    //         1:  [0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0],
-    //         2:  [0,0,4,4,4,4,0,0,0,0,0,0,0,0,0,0,0],
-    //         3:  [0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,1,1],
-    //         4:  [0,0,0,0,0,0,0,2,2,2,2,2,2,2,0,1,2],
-    //         5:  [0,0,0,0,0,0,0,0,1,1,1,1,0,0,0,1,2],
-    //         6:  [0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,1,2],
-    //         7:  [0,4,4,4,4,4,4,0,0,0,0,0,0,0,0,1,2],
-    //         8:  [0,0,0,0,0,0,0,0,0,0,0,0,1,1,1,1,2],
-    //         9:  [0,0,0,0,0,0,0,0,0,0,0,0,2,2,2,2,2],
-    //         10: [0,0,0,0,0,0,1,1,1,1,1,0,2,2,2,2,2],
-    //         11: [0,0,0,0,0,0,1,2,2,2,1,0,2,2,2,2,2],
-    //         12: [0,0,0,0,0,0,1,2,2,2,1,0,2,2,2,2,2],
-    //         13: [1,0,0,1,1,1,1,2,2,2,1,1,1,1,1,1,1],
-    //         14: [2,0,0,2,2,2,2,2,2,2,2,2,2,2,2,2,2],
-    //         15: [2,0,0,2,3,3,3,3,3,3,3,3,3,3,3,3,3]
-    //     };
-    // }
-    // lvl =levelOne
+
     // This line subtracts the current vertical velocity (yke) from the player's y position.
     // This effectively moves the player up or down based on his current velocity.
     obj.y -= obj.yke;
@@ -170,46 +188,30 @@ let blockedRight
     // This line calculates the new gravitational force based on the player's mass and position.
     obj.gpe = calcGPE(obj);
 
-    // This block checks if the player is touching any obstacles in the current column.
-    // If the player is touching an obstacle, it adjusts the player's vertical position and velocity.
-    
-    if (getTile(obj.x + 32, obj.y) === 1 || getTile(obj.x , obj.y) === 1) {
 
-        if (obj.yke >= 0){
-            obj.yke = -0.5;
-            obj.y += 1;
-        }
-    }  
-   //handle side to side collision 
-    if ( getTile(obj.x +32, obj.y) === 1) {
-       blockedLeft = true
-        // console.log('ow my left face')
-    }  else {
-        blockedLeft = false
-    }
-    if (getTile(obj.x  -2, obj.y) === 1 ) {
-        blockedRight = true
-        // console.log('ow my right face')
-    }  else {
-        blockedRight = false
-    }
+   
+
+    // handle object top collisions for fully Solid Blocks
+   if (solidBlock.includes(getTile(obj.x + 32, obj.y))  ||  solidBlock.includes(getTile(obj.x , obj.y))) {
+         if (obj.yke >= 0){
+             obj.yke = -0.5;
+             obj.y += (4);
+         }
+     }  
 
 
-    //handle wooden blocks
-    if (getTile(obj.x + 32, obj.y) === 4) {  
-    } else if (getTile(obj.x, (obj.y + 32)) === 4) {
+    //handle object land on floor solidFloor Blocks
+    if (solidFloor.includes(getTile(obj.x + player.width , obj.y + player.height )) || solidFloor.includes(getTile(obj.x, (obj.y + player.height )))) {
 
         if (obj.yke <= 0){
             obj.yke = 0;
             obj.y -= (obj.y % 32);
         }
     }  
-        // This block checks if the player is touching any obstacles in the next row.
-        // If the player is touching an obstacle, it adjusts the player's vertical position and velocity.
 
-    //handle feet on the ground    
-    if (getTile(obj.x + 32, (obj.y + 32)) === 1 || getTile(obj.x, (obj.y + 32)) ===1) {
-        // console.log('im on the ground i guess')
+    //handle object land on the ground for fully Solid Blocks   
+     if (solidBlock.includes(getTile(obj.x + player.width, (obj.y + player.height))) || solidBlock.includes(getTile(obj.x, (obj.y + player.height))) ) {
+        console.log('im on the ground i guess')
         if (obj.yke <= 0){
             obj.yke = 0;
             obj.y -= (obj.y % 32);
