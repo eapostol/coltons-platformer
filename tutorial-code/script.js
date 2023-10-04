@@ -16,10 +16,10 @@ function main(){
   draw();
   requestAnimationFrame(main);
 }
-window.onload = function(){
-  currentLevel = parse(level);
-  main();
-}
+// window.onload = function(){
+//   currentLevel = parse(level);
+//   main();
+// }
 
 const level = 
 `0000000000000000

@@ -1,90 +1,93 @@
-const c = document.getElementById("canvas").getContext("2d");
-const player = {
-  x: 100,
-  y: 256,
-  width: 32,
-  height: 32,
-  speed: 3,
-  mass: 64,
-  yke: 0,
-  gpe: 0
-}
-let lvl;
-const main = () => {
-   gravity(player)
-   collisions(player)
-   input()
-  c.clearRect(0, 0, canvas.width, canvas.height);
-  drawLevel(lvl)
-  requestAnimationFrame(main);
-}
-  window.onload = function(){
-     lvl = levelOne;
-startGame(lvl)
-}
-const startGame = (lvl) => {
-     currentLevel = lvl;
-     console.log(lvl)
-    main();
-}
+import { currentLevel } from "./main.js";
+import { player } from "./player.js";
+
+
+// const c = document.getElementById("canvas").getContext("2d");
+// const player = {
+//   x: 100,
+//   y: 256,
+//   width: 32,
+//   height: 32,
+//   speed: 3,
+//   mass: 64,
+//   yke: 0,
+//   gpe: 0
+// }
+// let lvl;
+// const main = () => {
+//    gravity(player)
+//    collisions(player)
+//    input()
+//   c.clearRect(0, 0, canvas.width, canvas.height);
+//   drawLevel(lvl)
+//   requestAnimationFrame(main);
+// }
+//   window.onload = function(){
+//      lvl = levelOne;
+// startGame(lvl)
+// }
+// const startGame = (lvl) => {
+//      currentLevel = lvl;
+//      console.log(lvl)
+//     main();
+// }
 //USE A QUEUE 
- let levelOne = {
-    0:  [5,5,5,5,5,5,5,5,5,5,5,5,5,5,5,5,5],
-    1:  [5,0,0,0,0,0,0,0,0,0,1,0,0,0,0,0,5],
-    2:  [5,0,4,4,4,4,0,0,0,0,1,0,0,0,0,0,5],
-    3:  [5,0,0,0,0,0,0,0,0,0,1,0,0,0,0,1,5],
-    4:  [5,0,0,0,0,0,0,0,0,0,1,0,0,0,0,1,5],
-    5:  [5,0,0,0,0,0,0,0,1,1,1,1,1,0,0,1,5],
-    6:  [5,0,0,0,0,0,0,0,0,0,0,0,0,0,0,1,5],
-    7:  [5,4,4,4,4,4,4,0,0,0,0,0,0,0,0,1,5],
-    8:  [5,0,0,0,0,0,0,0,0,0,0,0,1,1,1,1,5],
-    9:  [5,0,0,0,0,0,0,0,0,0,0,1,1,2,2,2,5],
-    10: [5,0,0,0,0,0,1,1,0,0,0,1,1,2,2,2,5],
-    11: [5,0,0,0,0,0,1,2,0,0,0,1,1,2,2,2,5],
-    12: [5,0,0,0,0,0,1,2,0,0,0,1,1,0,2,2,5],
-    13: [5,0,0,1,1,1,1,2,0,1,1,1,1,0,1,1,5],
-    14: [5,0,0,2,2,2,2,2,0,0,0,0,0,0,0,0,5],
-    15: [5,5,5,5,5,5,5,5,5,5,5,5,5,5,5,5,5]
-};
+//  let levelOne = {
+//     0:  [5,5,5,5,5,5,5,5,5,5,5,5,5,5,5,5,5],
+//     1:  [5,0,0,0,0,0,0,0,0,0,1,0,0,0,0,0,5],
+//     2:  [5,0,4,4,4,4,0,0,0,0,1,0,0,0,0,0,5],
+//     3:  [5,0,0,0,0,0,0,0,0,0,1,0,0,0,0,1,5],
+//     4:  [5,0,0,0,0,0,0,0,0,0,1,0,0,0,0,1,5],
+//     5:  [5,0,0,0,0,0,0,0,1,1,1,1,1,0,0,1,5],
+//     6:  [5,0,0,0,0,0,0,0,0,0,0,0,0,0,0,1,5],
+//     7:  [5,4,4,4,4,4,4,0,0,0,0,0,0,0,0,1,5],
+//     8:  [5,0,0,0,0,0,0,0,0,0,0,0,1,1,1,1,5],
+//     9:  [5,0,0,0,0,0,0,0,0,0,0,1,1,2,2,2,5],
+//     10: [5,0,0,0,0,0,1,1,0,0,0,1,1,2,2,2,5],
+//     11: [5,0,0,0,0,0,1,2,0,0,0,1,1,2,2,2,5],
+//     12: [5,0,0,0,0,0,1,2,0,0,0,1,1,0,2,2,5],
+//     13: [5,0,0,1,1,1,1,2,0,1,1,1,1,0,1,1,5],
+//     14: [5,0,0,2,2,2,2,2,0,0,0,0,0,0,0,0,5],
+//     15: [5,5,5,5,5,5,5,5,5,5,5,5,5,5,5,5,5]
+// };
 
-const drawLevel = (lvl) => {
+// const drawLevel = (lvl) => {
   
-    Object.keys(lvl).forEach(key => {
-        for(let i = 0; i < lvl[key].length; i++){
-            if (lvl[key][i] == 1) {
-                c.fillStyle = "green";
-                c.fillRect(i * 32 , Number(key) * 32, 32, 32);
-            }
-            if (lvl[key][i] == 2) {
-                c.fillStyle = "brown";
-                c.fillRect(i * 32 , Number(key) * 32, 32, 32);
-            }
-            if (lvl[key][i] == 3) {
-                c.fillStyle = "grey";
-                c.fillRect(i * 32 , Number(key) * 32, 32, 32);
-            }
-            if (lvl[key][i] == 0) {
-                c.fillStyle = "skyBlue";
-                c.fillRect(i * 32 , Number(key) * 32, 32, 32);
-            } if (lvl[key][i] == 4) {
-                c.fillStyle = "yellow";
-                c.fillRect(i * 32 , Number(key) * 32, 32, 32);
-            } if (lvl[key][i] == 5) {
-                c.fillStyle = "black";
-                c.fillRect(i * 32 , Number(key) * 32, 32, 32);
-            }
-        };
+//     Object.keys(lvl).forEach(key => {
+//         for(let i = 0; i < lvl[key].length; i++){
+//             if (lvl[key][i] == 1) {
+//                 c.fillStyle = "green";
+//                 c.fillRect(i * 32 , Number(key) * 32, 32, 32);
+//             }
+//             if (lvl[key][i] == 2) {
+//                 c.fillStyle = "brown";
+//                 c.fillRect(i * 32 , Number(key) * 32, 32, 32);
+//             }
+//             if (lvl[key][i] == 3) {
+//                 c.fillStyle = "grey";
+//                 c.fillRect(i * 32 , Number(key) * 32, 32, 32);
+//             }
+//             if (lvl[key][i] == 0) {
+//                 c.fillStyle = "skyBlue";
+//                 c.fillRect(i * 32 , Number(key) * 32, 32, 32);
+//             } if (lvl[key][i] == 4) {
+//                 c.fillStyle = "yellow";
+//                 c.fillRect(i * 32 , Number(key) * 32, 32, 32);
+//             } if (lvl[key][i] == 5) {
+//                 c.fillStyle = "black";
+//                 c.fillRect(i * 32 , Number(key) * 32, 32, 32);
+//             }
+//         };
       
-    });
-    c.fillStyle = "red";
-    c.fillRect(player.x, player.y, player.width, player.height);
+//     });
+//     c.fillStyle = "red";
+//     c.fillRect(player.x, player.y, player.width, player.height);
     
-}
+// }
 
 
 
-let currentLevel;
-
+// let currentLevel;
 
 
  let keysDown = {};
@@ -219,3 +222,5 @@ const collisions = (obj) => {
     }
     
 }
+
+export { gravity, collisions, input };
