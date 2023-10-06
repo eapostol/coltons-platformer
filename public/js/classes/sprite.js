@@ -1,5 +1,5 @@
 import { c } from "../script.js";
-
+// this is for anything that will be an image put on to the game canvas
 class Sprite {
     constructor({position, imageSrc}){
       this.position = position

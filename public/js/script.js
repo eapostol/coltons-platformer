@@ -1,3 +1,4 @@
+// compile everything you need and declare variables that will be used later
 ////////////////////////////////////////////////////////////////
 import { levelOneArray } from "./data/collisions.js";
 import { Sprite } from "./classes/sprite.js";
@@ -23,7 +24,7 @@ let gravity = .8
 ////////////////////////////////////////////////////////////////
 
 
-
+// converts the map array into an object
 ////////////////////////////////////////////////////////////////
  const convertTo2D = (levelArray) => (levelArray).reduce((accumulator, val, idx) => {
   let row = Math.floor(idx / 32);
@@ -36,15 +37,7 @@ let gravity = .8
 ////////////////////////////////////////////////////////////////
 
 
-
-////////////////////////////////////////////////////////////////
-const getTile = (x,y) => {
-  return(currentLevel[Math.floor(y / 64)][Math.floor(x / 64)]);
-}
-////////////////////////////////////////////////////////////////
-
-
-
+// this makes an array of all the collation blocks and includes their block type position and color code for visualizing, if you wanna see the game without the colors overlaid then comment out the fillstyle color in the collision block class
 ////////////////////////////////////////////////////////////////
 const getCollisionBlocks = (lvl) => {
   Object.keys(lvl).forEach((key, y) => {
@@ -113,7 +106,7 @@ const getCollisionBlocks = (lvl) => {
 ////////////////////////////////////////////////////////////////
 
 
-
+// this allows for the input to know when a key is no longer pressed
 ////////////////////////////////////////////////////////////////
 const keys = {
       d: {
@@ -129,7 +122,7 @@ const keys = {
 ////////////////////////////////////////////////////////////////
 
 
-
+// this loops over everything that needs to be checked every frame
 ////////////////////////////////////////////////////////////////
     const animate = () => {
 
@@ -165,14 +158,19 @@ else if (keys.a.pressed) {player.velocity.x = -5}
       
   c.restore()    
     }
-    window.onload = function() {
+ //////////////////////////////////////////////////////////////// 
+ 
+
+ // this calls a function that starts the game
+ ////////////////////////////////////////////////////////////////
+window.onload = function() {
       startGame(levelOneArray)
       
   }
  //////////////////////////////////////////////////////////////// 
  
 
- 
+ // this compiles pretty much all of the assets as well, as starts the game loop
  ////////////////////////////////////////////////////////////////
 const startGame = (lvl) => {
 
@@ -201,7 +199,7 @@ const startGame = (lvl) => {
  ////////////////////////////////////////////////////////////////   
 
 
-
+// and key down event listener is for user input
  ////////////////////////////////////////////////////////////////   
     addEventListener("keydown", (event) => {
       switch (event.key) {
@@ -224,7 +222,7 @@ const startGame = (lvl) => {
   ////////////////////////////////////////////////////////////////
   
 
-  
+  // add key up event listeners for user input
   ////////////////////////////////////////////////////////////////
     });
     addEventListener("keyup", (event) => {
@@ -248,4 +246,4 @@ const startGame = (lvl) => {
 
 
    ////////////////////////////////////////////////////////////////
-    export {c, gravity, keys, startGame, getTile, currentLevel };
+    export {c, gravity, keys, startGame };

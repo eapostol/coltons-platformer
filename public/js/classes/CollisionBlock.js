@@ -7,7 +7,9 @@ class CollisionBlock {
       this.type =type;
     }
     draw() {
-      c.fillStyle = this.color
+       c.fillStyle = 'rgba(0,0,0,0.0)'
+// VVVVVV  comment out below to see game without overlay VVVVV
+      //  c.fillStyle = this.color
       c.fillRect(this.position.x, this.position.y, this.width, this.height)
     }
     update(){

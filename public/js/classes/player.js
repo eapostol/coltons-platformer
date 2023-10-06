@@ -2,6 +2,8 @@ import { c, gravity, keys } from "../script.js";
 import { collision } from "../data/collisions.js";
 let blockedLeft = false;
 let blockedRight = false;
+
+// this housees the players attributes as well as can be used for making non-player objects, also this iterates over the collision checks
 class Player {
     constructor({position, collisionBlocks}){
         this.collisionBlocks = collisionBlocks
@@ -31,7 +33,8 @@ class Player {
         this.position.y += this.velocity.y;
         this.velocity.y += gravity
     }
-    checkForSideCollsions(){
+    // checks side the side
+checkForSideCollsions(){
         for (let i = 0; i < this.collisionBlocks.length; i++) {
             const collisionBlock = this.collisionBlocks[i];
             if (
@@ -52,8 +55,8 @@ if (this.velocity.x < 0){
                 }
         }
     }
-    
-    checkForVerticalCollsions(){
+    // check vertical collisions
+checkForVerticalCollsions(){
         for (let i = 0; i < this.collisionBlocks.length; i++) {
             const collisionBlock = this.collisionBlocks[i];
             if (
@@ -62,6 +65,7 @@ if (this.velocity.x < 0){
                 object2: collisionBlock,
             })
             ) {
+                // currently, this is my janky solve for getting solid top block types to work
 if (collisionBlock.type == 'solidTop' && this.velocity.y < 0){
     this.velocity.y = 0
     this.position.y = collisionBlock.position.y - this.height + 0.01
