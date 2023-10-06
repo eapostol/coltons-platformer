@@ -1,0 +1,84 @@
+import { c, gravity, keys } from "../script.js";
+import { collision } from "../data/collisions.js";
+let blockedLeft = false;
+let blockedRight = false;
+class Player {
+    constructor({position, collisionBlocks}){
+        this.collisionBlocks = collisionBlocks
+      this.position = position
+      this.velocity = {
+       x: 25,
+       y: 1
+      }
+      this.height = 28,
+      this.width = 28
+     }
+  
+ 
+    draw() {
+      c.fillStyle = "red";
+      c.fillRect(this.position.x, this.position.y, this.height, this.width);
+      
+    }
+    update(){
+     this.draw()
+     this.position.x += this.velocity.x
+     this.checkForSideCollsions()
+     this.applyGravity()
+     this.checkForVerticalCollsions()
+    }
+     applyGravity() {
+        this.position.y += this.velocity.y;
+        this.velocity.y += gravity
+    }
+    checkForSideCollsions(){
+        for (let i = 0; i < this.collisionBlocks.length; i++) {
+            const collisionBlock = this.collisionBlocks[i];
+            if (
+                collision({
+                object1: this,
+                object2: collisionBlock,
+            })
+            ) {
+if (this.velocity.x > 0){
+    this.velocity.x = 0
+    this.position.x = collisionBlock.position.x - this.width -0.02
+}
+if (this.velocity.x < 0){
+    this.velocity.x = 0
+    this.position.x = 
+            collisionBlock.position.x + collisionBlock.width + 0.01
+}
+                }
+        }
+    }
+    
+    checkForVerticalCollsions(){
+        for (let i = 0; i < this.collisionBlocks.length; i++) {
+            const collisionBlock = this.collisionBlocks[i];
+            if (
+                collision({
+                object1: this,
+                object2: collisionBlock,
+            })
+            ) {
+if (collisionBlock.type == 'solidTop' && this.velocity.y < 0){
+    this.velocity.y = 0
+    this.position.y = collisionBlock.position.y - this.height + 0.01
+} else {
+if (this.velocity.y > 0){
+    this.velocity.y = 0
+    this.position.y = collisionBlock.position.y - this.height -0.01
+} 
+if (this.velocity.y < 0){
+    this.velocity.y = 0
+    this.position.y = 
+            collisionBlock.position.y + collisionBlock.height + 0.01
+}
+       }    
+      }
+     }
+    }  
+}
+export {Player, blockedLeft, blockedRight};
+
