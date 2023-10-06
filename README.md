@@ -10,7 +10,7 @@ a platformer game that has levels, enemies and points that can be collected
 
 ## Issues
 
-i got the basic physics running, im not sure though if it is the best way, i also am still having to consider how i will get interations with multiple block typs, now i am working on blocks that are solid only on the top
+i got the basic physics running for solid top tiles, spike tiles, and normal solid tiles, im not sure though if it is the best way, i also am still having to consider how i will get laders to work, and i have no idea how im gonna add enimies or colectable objects yet
 
 ## credits
 

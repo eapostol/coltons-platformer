@@ -24,6 +24,7 @@ const levelOneArray = [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 
  // this checks for collisions between object, one which is player and object two which is a collision block 
 ////////////////////////////////////////////////////////////////
 const collision = ({object1, object2}) => {
+     
 // these give access to the bounds of the objects
 let oneLeft =  object1.position.x;
 let oneRight = object1.position.x + object1.width;
@@ -31,11 +32,18 @@ let oneTop = object1.position.y;
 let oneBottom = object1.position.y + object1.height
 
 let twoLeft =  object2.position.x;
-let twoRight = object2.position.x + object1.width;
+let twoRight = object2.position.x + object2.width;
 let twoTop = object2.position.y;
-let twoBottom = object2.position.y + object1.height
+let twoBottom = object2.position.y + object2.height
 
-
+//changes hitbox of collision block if only the top is solid
+if (object2.type == 'solidTop'){
+ twoBottom = object2.position.y -8
+    }  
+//sets the spikes heights a bit lower than the other blocks     
+if (object2.type == 'spikes'){
+    twoTop = object2.position.y +15
+    }      
 // this is the actual comparison between the objects    
     if (
     oneLeft <= twoRight && 

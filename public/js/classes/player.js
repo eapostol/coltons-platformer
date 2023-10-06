@@ -43,6 +43,10 @@ checkForSideCollsions(){
                 object2: collisionBlock,
             })
             ) {
+//removes movement conditions from spike blocks and logs ouch                
+if (collisionBlock.type == 'spikes'){
+    console.log('OUCH!!')
+   } else  {               
 if (this.velocity.x > 0){
     this.velocity.x = 0
     this.position.x = collisionBlock.position.x - this.width -0.02
@@ -51,10 +55,11 @@ if (this.velocity.x < 0){
     this.velocity.x = 0
     this.position.x = 
             collisionBlock.position.x + collisionBlock.width + 0.01
-}
-                }
-        }
+     }
     }
+   }
+  }
+ }
     // check vertical collisions
 checkForVerticalCollsions(){
         for (let i = 0; i < this.collisionBlocks.length; i++) {
@@ -65,20 +70,27 @@ checkForVerticalCollsions(){
                 object2: collisionBlock,
             })
             ) {
-                // currently, this is my janky solve for getting solid top block types to work
+// currently, this is less janky solve for getting solid top block types to work
+// essentialy it only has a different action if jumping up through the block, otherwise it acts the same as other blocks
+ 
 if (collisionBlock.type == 'solidTop' && this.velocity.y < 0){
-    this.velocity.y = 0
     this.position.y = collisionBlock.position.y - this.height + 0.01
-} else {
+} 
+//removes movement conditions from spike blocks and logs ouch                
+else if (collisionBlock.type == 'spikes'){
+        console.log('OUCH!!')
+     
+} else {   
 if (this.velocity.y > 0){
     this.velocity.y = 0
     this.position.y = collisionBlock.position.y - this.height -0.01
+    
 } 
 if (this.velocity.y < 0){
     this.velocity.y = 0
     this.position.y = 
             collisionBlock.position.y + collisionBlock.height + 0.01
-}
+        }
        }    
       }
      }
